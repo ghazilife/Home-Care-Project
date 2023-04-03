@@ -1,5 +1,4 @@
 # Home-Care-Project
-
 A remote patient monitoring system
 
 
@@ -98,9 +97,96 @@ Health
 We've build an API call that gets a summary of the patient's health and multiple smaller API calls the patient uses to submit new data
 
 Show API Calls
+GET /health/:username Returns the health status of patient including medication, temperature, blood Pressure, pulse, weight and the patient's pending tasks.
+
+POST /updatePatient/:patientID Patient's data is updated.
+
+POST /medication/pending/:username/:title Patient confirms that the medication was taken within the allowed timeframe.
+
+POST /medication/missed/:username/:title/:timestamp Patient either confirms that the medication was taken or forgotten once the allowed timeframe has passed.
+
+POST /temperature/pending/:username Patient confirms that temperature was measure within the allowed timeframe.
+
+POST /temperature/missed/:username/:title/:timestamp Patient either confirms that temperature was measured or forgotten once the allowed timeframe has passed.
+
+POST /weight/pending/:username/:title Patient confirms that the weight was measure within the allowed timeframe.
+
+POST /weight/missed/:username/:title/:timestamp Patient either confirms that the weight was measured or forgotten once the allowed timeframe has passed.
+
+POST /blood_pressure/pending/:username Patient confirms that blood pressure was measure within the allowed timeframe.
+
+POST /blood_pressure/missed/:username/:title/:timestamp Patient either confirms that blood pressure was measured or forgotten once the allowed timeframe has passed.
+
+POST /pulse/pending/:username Patient confirms that pulse was measure within the allowed timeframe.
+
+POST /pulse/missed/:username/:title/:timestamp Patient either confirms that pulse was measured or forgotten once the allowed timeframe has passed.
+
+POST /medication Patient either confirms that medication was taken or forgotten once the allowed timeframe has passed.
+
 Furthermore, we store health data as JSON objects in the database.
 
 Show Example of health data
+medication is saved in the Database as follows:
+
+{"medication": [
+       {"title":"Azathioprine","ammount":1,"duration":1,"history":[
+   	{"timestamp": 1609879883768, "measured": true},
+ 	{"timestamp": 1609879883768, "measured": true},
+ 	{"timestamp": 1609966283768, "measured": true},
+ 	{"timestamp": 1610052683768, "measured": true},
+ 	{"timestamp": 1610139083768, "measured": true},
+ 	{"timestamp": 1610225483768, "measured": true}
+             ],
+         "assigned_on": 1609707083768},
+       {"title":"Ciclosporin","ammount":1,"duration":2,"history":[
+   	{"timestamp": 1609707083768, "measured": true},
+ 	{"timestamp": 1609879883768, "measured": true},
+ 	{"timestamp": 1610052683768, "measured": true},
+ 	{"timestamp": 1610225483768, "measured": true},
+ 	{"timestamp": 1610311883768, "measured": true}
+             ],
+     "assigned_on": 1609707083768},
+  ]}
+Temperature is saved in the Database as follows:
+
+ {"temperature":[
+ 	{"temperature":36.9,"timestamp": 1609707083768, "measured": true},
+ 	{"temperature":36.8,"timestamp": 1609879883768, "measured": true},
+ 	{"temperature":36.5,"timestamp": 1610052683768, "measured": true},
+ 	{"temperature":36.9,"timestamp": 1610225483768, "measured": true},
+ 	{"temperature":37.1,"timestamp": 1610311883768, "measured": true}
+ 	]},
+ ]}
+Weight is saved in the Database as follows:
+
+ {"weight":[
+ 	{"weight":72,"timestamp": 1609707083768, "measured": true},
+ 	{"weight":68,"timestamp": 1609879883768, "measured": true},
+ 	{"weight":70,"timestamp": 1610052683768, "measured": true},
+ 	{"weight":69,"timestamp": 1610225483768, "measured": true},
+ 	{"weight":71,"timestamp": 1610311883768, "measured": true}
+ 	]},
+ ]}
+pulse is saved in the Database as follows:
+
+ {"pulse":[
+ 	{"pulse":46,"timestamp": 1609707083768, "measured": true},
+ 	{"pulse":46,"timestamp": 1609879883768, "measured": true},
+ 	{"pulse":46,"timestamp": 1610052683768, "measured": true},
+ 	{"pulse":46,"timestamp": 1610225483768, "measured": true},
+ 	{"pulse":47,"timestamp": 1610311883768, "measured": true}
+ 	]},
+ ]}
+blood_pressure is saved in the Database as follows:
+
+ {"blood_pressure":[
+ 	{"bloodpres_dia": 120, "bloodpres_sys": 80, "timestamp": 1609707083768, "measured": true},
+ 	{"bloodpres_dia": 122, "bloodpres_sys": 76, "timestamp": 1609879883768, "measured": true},
+ 	{"bloodpres_dia": 110, "bloodpres_sys": 83, "timestamp": 1610052683768, "measured": true},
+ 	{"bloodpres_dia": 123, "bloodpres_sys": 81, "timestamp": 1610225483768, "measured": true},
+ 	{"bloodpres_dia": 115, "bloodpres_sys": 77, "timestamp": 1610311883768, "measured": true}
+ 	]},
+ ]}
 API - Doctor
 The API consists of the following endpoints:
 
@@ -112,10 +198,39 @@ Patient
 The doctor uses the following API calls to get a list of all existing patients or to add a new patient.
 
 Show API Calls
+GET /getPatients Returns a list of all patients inlcuding the health status points.
+
+POST /addPatient Creates a new Patient.
+
+POST /medication Assigns a medication to a patient.
+
 API - Chat
 The API consists of the following endpoints:
 
 Show API Calls
+GET /getAllChatrooms Returns all messages from database
+
+GET /getAllChatroomsFromUser/:id/:type Returns all messages from one person (sent and received)
+
+GET /getAllChatroomsFromTwoParties/:chatPartner1ID/:chatPartner1Type/:chatPartner2ID/:chatPartner2Type Returns all messages from two parties
+
+POST /newChatroom/:chatID/:chatName/:fromID/:fromType/:toID/:toType Creates a new chatroom
+
+POST /updateMessage/:chatID/:chatName/:chatPartner1ID/:chatPartner1Type/:chatPartner2ID/:chatPartner2Type/:message Update the message entry
+
+GET /getPatients Returns the IDs and names from all patients
+
+GET /getDoctors Returns the IDs and names from all doctors
+
+GET /getPharmacies Returns the IDs and names from all pharmacies
+
 Furthermore, we store the chatroom as JSON objects in the database.
 
 Show Example of health data
+messages is saved in the Database as follows:
+
+   {"messages":[
+   	{"timestamp":1613118472724,"type":"created","read":true}
+	{"message":"Hello", "fromType":"doctor","toType":"patient", "timestamp":1613118475705, "read":true, "type":"message"}
+	{"message":"hello doctor", "fromType": "patient", "toType": "doctor", "timestamp":1613220860614, "read":false, "type":"message"}
+	]}
