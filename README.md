@@ -4,21 +4,13 @@ A remote patient monitoring system
 
 
 Homecare App is a remote patient monitoring system. The patient should be able to enter on a mobile phone vital information, such as temperature, pulse, blood pressure, weight and medication intake. The data is requested from the patient once a day and then sent to a server where the information is stored in a database.
-The app is developed by:
-
-Ahmed Khelifi
-Wenwen Zhang
-Johanna Schicktanz
+The app is developed by:MO JUNED
 Run using the development build
-$ git clone https://github.com/ahmedkhelifi/Home-care.git
-$ cd Home-care
-Home-care$ npm start
-Home-care$ node server
+
+Home-Care-Project npm start
+Home-Care-Project node server
 Create a production build for server deployment
-$ git clone https://github.com/ahmedkhelifi/Home-care.git
-$ cd Home-care
-Home-care$ npm run build
-Home-care$ node server
+
 Built with
 Frontend: React.js + echarts.js
 Server: Node.js
